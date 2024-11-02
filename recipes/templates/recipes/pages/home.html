@@ -5,7 +5,7 @@
 {% block title %}Home | Recipes{% endblock title %}
 
 {% block content %}
-    {% cache 30 "home_recipes" %}
+    {% cache 600 "home_recipes" %}
         <div class="main-content main-content-list container">
             {% for recipe in recipes %}
                 {% include "../partials/recipe.html" %}
@@ -13,6 +13,3 @@
         </div>
     {% endcache %}
 {% endblock content %}
-
- 
-
