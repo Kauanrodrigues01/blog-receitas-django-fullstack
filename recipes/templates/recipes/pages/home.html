@@ -1,0 +1,17 @@
+{% extends 'global/base.html' %}
+
+{% load cache %}
+
+{% block title %}Home | Recipes{% endblock title %}
+
+{% block content %}
+    {% cache 30 "home_recipes" %}
+        <div class="main-content main-content-list container">
+            {% for recipe in recipes %}
+                {% include "../partials/recipe.html" %}
+            {% endfor %}
+        </div>
+    {% endcache %}
+{% endblock content %}
+
+ 
