@@ -2,13 +2,14 @@
 
 {% load cache %}
 
-{% block title %}{{ category_name }} - Category{% endblock title %}
+{% block title %}{{ category_name }}{% endblock title %}
 
 {% block content %}
-    {% cache 1 "category_recipes" %}
+    {% cache 1 "recipes-by-category" %}
         {% if category_exists %}
         <h2 class="title-category-recipes">Category recipes: {{ category_name }}</h2>
         {% endif %}
+
         <div class="main-content main-content-list container">
             {% if category_exists %}
                 {% if recipes %}
@@ -21,10 +22,8 @@
                 {% endif %}
 
             {% else %}
-                <h2>This category does not exist</h2>
+                <h2>Category Not Found</h2>
             {% endif %}
-            
-            
         </div>
     {% endcache %}
 {% endblock content %}

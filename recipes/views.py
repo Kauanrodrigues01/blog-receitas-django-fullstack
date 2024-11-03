@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, get_list_or_404, get_object_or_404
 from utils.recipes.factory import make_recipe
 from .models import Recipe, Category
 
@@ -11,9 +11,11 @@ def home(request):
 
 
 def recipe(request, id):
+    recipe = Recipe.objects.filter(id=id, is_published=True).first()
     context = {
-        'recipe': Recipe.objects.filter(id=id, is_published=True).first(),
-        'is_detail_page': True
+        'recipe': recipe,
+        'is_detail_page': True,
+        'recipe_title': f'{recipe.title} - Recipe' if recipe else 'This recipe does not exist'
     }
     
     return render(request, 'recipes/pages/recipe-view.html', context)
@@ -30,7 +32,7 @@ def recipes_by_category(request, category_id):
     context = {
         'recipes': recipes,
         'category_exists': True if category else False,
-        'category_name': category.name if category else 'Category does not exist'
+        'category_name': f'{category.name} - Category' if category else 'This category does not exist'
     }
     
     return render(request, 'recipes/pages/category.html', context)
