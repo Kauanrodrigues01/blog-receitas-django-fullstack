@@ -1,10 +1,20 @@
 {% extends "global/base.html" %}
 
-{% block title %}ALTERAR{% endblock title %}
+{% block title %}
+    {% if recipe %}
+        {{ recipe.title }} - Recipe
+    {% else %}
+        This recipe does not exists
+    {% endif %}
+{% endblock title %}
 
 {% block content %}
     <div class="main-content main-content-detail container">
-        {% include 'recipes/partials/recipe.html' %}
+        {% if recipe %}
+            {% include 'recipes/partials/recipe.html' %}
+        {% else %}
+            <h2>Recipe Not Found</h2>
+        {% endif %}
     </div>
 {% endblock content %}
         

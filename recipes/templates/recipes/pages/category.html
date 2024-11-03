@@ -1,0 +1,30 @@
+{% extends 'global/base.html' %}
+
+{% load cache %}
+
+{% block title %}{{ category_name }} - Category{% endblock title %}
+
+{% block content %}
+    {% cache 1 "category_recipes" %}
+        {% if category_exists %}
+        <h2 class="title-category-recipes">Category recipes: {{ category_name }}</h2>
+        {% endif %}
+        <div class="main-content main-content-list container">
+            {% if category_exists %}
+                {% if recipes %}
+                {% for recipe in recipes %}
+                    {% include "../partials/recipe.html" %}
+                {% endfor %}
+
+                {% else %}
+                    <h2>Recipes Not Found</h2>
+                {% endif %}
+
+            {% else %}
+                <h2>This category does not exist</h2>
+            {% endif %}
+            
+            
+        </div>
+    {% endcache %}
+{% endblock content %}
