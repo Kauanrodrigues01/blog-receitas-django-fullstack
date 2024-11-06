@@ -1,6 +1,4 @@
-from django.http import HttpResponse
-from django.shortcuts import render, get_list_or_404, get_object_or_404
-from utils.recipes.factory import make_recipe
+from django.shortcuts import render
 from .models import Recipe, Category
 
 def home(request):
@@ -18,7 +16,10 @@ def recipe(request, id):
         'recipe_title': f'{recipe.title} - Recipe' if recipe else 'This recipe does not exist'
     }
     
-    return render(request, 'recipes/pages/recipe-view.html', context)
+    if recipe:
+        return render(request, 'recipes/pages/recipe-view.html', context)
+    else:
+        return render(request, 'recipes/pages/recipe-view.html', context, status=404)
 
 def recipes_by_category(request, category_id):
     category = None
@@ -35,5 +36,8 @@ def recipes_by_category(request, category_id):
         'category_name': f'{category.name} - Category' if category else 'This category does not exist'
     }
     
-    return render(request, 'recipes/pages/category.html', context)
+    if context['category_exists']:
+        return render(request, 'recipes/pages/category.html', context)
+    
+    return render(request, 'recipes/pages/category.html', context, status=404)
 
