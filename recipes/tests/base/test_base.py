@@ -71,7 +71,7 @@ class TestBaseUrlsAndViews(TestCase):
     def get_category_url(self, category_id=1):
         return reverse('recipes:recipe-by-category', kwargs={'category_id': category_id})
     
-    def get_recipe_url(self, recipe_id):
+    def get_recipe_url(self, recipe_id=1):
         return reverse('recipes:recipe-detail', kwargs={'id': recipe_id})
     
     def assert_404(self, url):

@@ -35,8 +35,7 @@ class RecipeViewTest(TestBaseUrlsAndViews):
         self.assertEqual(len(response_context_recipes), 1)
         
     def test_recipe_category_view_function_is_correct(self):
-        url = self.get_category_url(category_id=1)
-        self.assertViewFunctionIsCorrect(url, views.recipes_by_category)
+        self.assertViewFunctionIsCorrect(self.get_category_url(), views.recipes_by_category)
         
     def test_recipe_category_view_returns_404_if_no_recipes_found(self):
         url = self.get_category_url(category_id=1000)
@@ -47,16 +46,14 @@ class RecipeViewTest(TestBaseUrlsAndViews):
         # Need a recipe for this test
         self.make_recipe(title=needed_title)
         
-        url = self.get_category_url(category_id=1)
-        response = self.client.get(url)
+        response = self.client.get(self.get_category_url())
         content = response.content.decode('utf-8')
         
         # Check if one recipe exists
         self.assertIn(needed_title, content)
         
     def test_recipe_detail_view_function_is_correct(self):
-        url = self.get_recipe_url(recipe_id=1)
-        self.assertViewFunctionIsCorrect(url, views.recipe)
+        self.assertViewFunctionIsCorrect(self.get_recipe_url(), views.recipe)
         
     def test_recipe_detail_view_returns_404_if_no_recipes_found(self):
         url = self.get_recipe_url(recipe_id=1000)
