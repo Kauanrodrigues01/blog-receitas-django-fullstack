@@ -1,6 +1,6 @@
-from .base.test_base import TestBaseUrlsAndViews
+from .base.test_base import TestBaseRecipes, RecipeURLMixin
 
-class RecipeURLsTest(TestBaseUrlsAndViews):
+class RecipeURLsTest(TestBaseRecipes, RecipeURLMixin):
     def test_recipe_home_url_is_correct(self):
         self.assertEqual(self.home_url, '/')
         

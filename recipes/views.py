@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from .models import Recipe, Category
+from django.core.cache import cache
 
 def home(request):
     context = {
@@ -18,8 +19,9 @@ def recipe(request, id):
     
     if recipe:
         return render(request, 'recipes/pages/recipe-view.html', context)
-    else:
-        return render(request, 'recipes/pages/recipe-view.html', context, status=404)
+    
+    # cache.clear()
+    return render(request, 'recipes/pages/recipe-view.html', context, status=404)
 
 def recipes_by_category(request, category_id):
     category = None
@@ -39,5 +41,6 @@ def recipes_by_category(request, category_id):
     if context['category_exists']:
         return render(request, 'recipes/pages/category.html', context)
     
+    # cache.clear()
     return render(request, 'recipes/pages/category.html', context, status=404)
 

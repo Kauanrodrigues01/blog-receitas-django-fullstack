@@ -5,7 +5,7 @@
 {% block title %}Home | Recipes{% endblock title %}
 
 {% block content %}
-    {% cache 1 "home_recipes" %}
+    {% cache 600 "home_recipes" %}
         <div class="main-content main-content-list container">
             {% if recipes %}
                 {% for recipe in recipes %}
@@ -13,7 +13,7 @@
                 {% endfor %}
 
             {% else %}
-                <h2>Recipes Not Found</h2>
+                <h2>No recipes found here</h2>
             {% endif %}
             
         </div>

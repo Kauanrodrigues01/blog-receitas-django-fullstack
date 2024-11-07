@@ -1,18 +1,17 @@
 from django.test import TestCase
 from django.urls import reverse, resolve
-from recipes.models import Recipe, Category 
-from django.contrib.auth.models import User
 from django.core.cache import cache
+from recipes.models import Category, Recipe
+from django.contrib.auth.models import User
 
-class TestBaseUrlsAndViews(TestCase):
-    @classmethod
-    def setUpTestData(cls):
-        cls.home_url = reverse('recipes:home')
-        
-    def setUp(self):
-        cache.clear()
-        return super().setUp()
-        
+class RecipeURLMixin:
+    def get_category_url(self, category_id=1):
+        return reverse('recipes:recipe-by-category', kwargs={'category_id': category_id})
+    
+    def get_recipe_url(self, recipe_id=1):
+        return reverse('recipes:recipe-detail', kwargs={'id': recipe_id})
+
+class RecipeCreationMixin:
     def make_category(self, name='Category'):
         return Category.objects.create(name=name)
 
@@ -67,13 +66,8 @@ class TestBaseUrlsAndViews(TestCase):
             preparation_steps_is_html=preparation_steps_is_html,
             is_published=is_published,
         )
-    
-    def get_category_url(self, category_id=1):
-        return reverse('recipes:recipe-by-category', kwargs={'category_id': category_id})
-    
-    def get_recipe_url(self, recipe_id=1):
-        return reverse('recipes:recipe-detail', kwargs={'id': recipe_id})
-    
+
+class RecipeAssertionsMixin:
     def assert_404(self, url):
         response = self.client.get(url)
         self.assertEqual(response.status_code, 404)
@@ -81,3 +75,12 @@ class TestBaseUrlsAndViews(TestCase):
     def assertViewFunctionIsCorrect(self, url, expected_view):
         response = resolve(url)
         self.assertEqual(response.func, expected_view)
+        
+class TestBaseRecipes(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.home_url = reverse('recipes:home')
+        
+    def setUp(self):
+        cache.clear()
+        return super().setUp()
