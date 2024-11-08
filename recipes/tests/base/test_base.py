@@ -1,6 +1,5 @@
 from django.test import TestCase
 from django.urls import reverse, resolve
-from django.core.cache import cache
 from recipes.models import Category, Recipe
 from django.contrib.auth.models import User
 
@@ -80,7 +79,3 @@ class TestBaseRecipes(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.home_url = reverse('recipes:home')
-        
-    def setUp(self):
-        cache.clear()
-        return super().setUp()

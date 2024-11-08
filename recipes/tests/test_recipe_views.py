@@ -1,6 +1,6 @@
 from .base.test_base import TestBaseRecipes, RecipeURLMixin, RecipeAssertionsMixin, RecipeCreationMixin
-from recipes.models import Recipe
 from recipes import views
+from django.core.cache import cache
 
 class RecipeViewTest(TestBaseRecipes, RecipeURLMixin, RecipeCreationMixin, RecipeAssertionsMixin):
     def test_recipe_home_view_function_is_correct(self):
@@ -15,8 +15,7 @@ class RecipeViewTest(TestBaseRecipes, RecipeURLMixin, RecipeCreationMixin, Recip
         self.assertTemplateUsed(response, 'recipes/pages/home.html')
         
     def test_recipe_home_template_shows_no_recipes_found_if_no_recipes(self):
-        recipes = Recipe.objects.all().delete()
-        print(recipes)
+        cache.clear()
         response = self.client.get(self.home_url)
         self.assertIn('<h2>No recipes found here</h2>', response.content.decode('utf-8'))
         
