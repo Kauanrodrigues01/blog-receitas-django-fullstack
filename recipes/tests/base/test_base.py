@@ -9,6 +9,12 @@ class RecipeURLMixin:
     
     def get_recipe_url(self, recipe_id=1):
         return reverse('recipes:recipe-detail', kwargs={'id': recipe_id})
+    
+    def get_search_url(self, q=None):
+        url = reverse('recipes:search')
+        if q:
+            return f'{url}?q={q}'
+        return url
 
 class RecipeCreationMixin:
     def make_category(self, name='Category'):

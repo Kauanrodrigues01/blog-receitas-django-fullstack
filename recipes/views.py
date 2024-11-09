@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from .models import Recipe, Category
-from django.core.cache import cache
+from django.http import Http404
+from django.db.models import Q
 
 def home(request):
     context = {
@@ -44,3 +45,24 @@ def recipes_by_category(request, category_id):
     # cache.clear()
     return render(request, 'recipes/pages/category.html', context, status=404)
 
+
+def search(request):
+    search_term = request.GET.get('q', '').strip()
+    
+    if not search_term:
+        raise Http404()
+    
+    context = {
+        'search_term': search_term,
+        'page_title': f'Search for "{search_term}" | Recipes',
+        'recipes': Recipe.objects.filter(
+                Q(
+                    Q(title__icontains=search_term) | 
+                    Q(description__icontains=search_term) | 
+                    Q(preparation_steps__icontains=search_term)
+                ) &
+                Q(is_published=True)
+                ).order_by('-id')
+    }
+    
+    return render(request, 'recipes/pages/search.html', context)
