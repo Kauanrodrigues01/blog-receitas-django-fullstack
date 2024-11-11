@@ -12,13 +12,11 @@ class RecipeCategoryViewTest(TestBaseRecipes, RecipeURLMixin, RecipeCreationMixi
         
     def test_recipe_category_template_loads_recipes(self):
         needed_title = 'This is a category test'
-        # Need a recipe for this test
         recipe = self.make_recipe(title=needed_title)
         
         response = self.client.get(self.get_category_url(recipe.category.id))
         content = response.content.decode('utf-8')
         
-        # Check if one recipe exists
         self.assertIn(needed_title, content)
         
     def test_recipe_category_template_dont_load_recipes_not_published(self):

@@ -5,17 +5,15 @@
 {% block title %}Home | Recipes{% endblock title %}
 
 {% block content %}
-    {% cache 600 "home_recipes" %}
-        <div class="main-content main-content-list container">
-            {% if recipes %}
-                {% for recipe in recipes %}
-                    {% include "../partials/recipe.html" %}
-                {% endfor %}
+    <div class="main-content main-content-list container">
+        {% if recipes %}
+            {% for recipe in recipes %}
+                {% include "../partials/recipe.html" %}
+            {% endfor %}
 
-            {% else %}
-                <h2>No recipes found here</h2>
-            {% endif %}
-            
-        </div>
-    {% endcache %}
+        {% else %}
+            <h2>No recipes found here</h2>
+        {% endif %}
+        
+    </div>
 {% endblock content %}

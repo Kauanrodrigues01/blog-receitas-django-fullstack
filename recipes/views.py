@@ -2,11 +2,25 @@ from django.shortcuts import render
 from .models import Recipe, Category
 from django.http import Http404
 from django.db.models import Q
+from utils.pagination import make_pagination
+from decouple import config
+from django.contrib.messages import error, success, info, debug, warning
+
+
+RECIPES_PER_PAGE = config('RECIPES_PER_PAGE', cast=int)
 
 def home(request):
+    recipes = Recipe.objects.filter(is_published=True).order_by('-id')
+    
+    page_obj, pagination_range = make_pagination(request, recipes, RECIPES_PER_PAGE)
+    
     context = {
-        'recipes': Recipe.objects.filter(is_published=True).order_by('-id')
+        'recipes': page_obj,
+        'pagination_range': pagination_range,
     }
+    
+    error(request, 'QUE LEGAL FOI UM ERRO')
+    
     return render(request, 'recipes/pages/home.html', context)
 
 

@@ -1,6 +1,7 @@
 from .base.test_base import TestBaseRecipes, RecipeURLMixin, RecipeAssertionsMixin, RecipeCreationMixin
 from recipes import views
 from django.core.cache import cache
+from unittest.mock import patch
 
 class RecipeHomeViewTest(TestBaseRecipes, RecipeURLMixin, RecipeCreationMixin, RecipeAssertionsMixin):
     def test_recipe_home_view_function_is_correct(self):
@@ -38,3 +39,22 @@ class RecipeHomeViewTest(TestBaseRecipes, RecipeURLMixin, RecipeCreationMixin, R
         content = response.content.decode('utf-8')
         
         self.assertIn('<h2>No recipes found here</h2>', content)
+    
+    @patch('recipes.views.RECIPES_PER_PAGE', new=2)
+    def test_recipe_home_is_paginated(self):
+        for i in range(4):
+            kwargs={
+                'slug': f'slug-{i}',
+                'author_data': {
+                    'username': f'author-{i}',
+                }
+            }
+            self.make_recipe(**kwargs)
+        
+        response = self.client.get(self.home_url)
+        recipes = response.context['recipes']
+        paginator = recipes.paginator
+        
+        self.assertEqual(paginator.num_pages, 2)
+        self.assertEqual(len(paginator.get_page(1)), 2)
+        self.assertEqual(len(paginator.get_page(2)), 2)
