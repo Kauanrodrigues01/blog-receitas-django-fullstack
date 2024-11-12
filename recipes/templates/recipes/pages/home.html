@@ -1,10 +1,11 @@
 {% extends 'global/base.html' %}
 
-{% load cache %}
-
 {% block title %}Home | Recipes{% endblock title %}
 
 {% block content %}
+
+    {% include 'recipes/partials/messages.html' %}
+
     <div class="main-content main-content-list container">
         {% if recipes %}
             {% for recipe in recipes %}
@@ -16,4 +17,5 @@
         {% endif %}
         
     </div>
+    
 {% endblock content %}

@@ -4,7 +4,7 @@ from django.http import Http404
 from django.db.models import Q
 from utils.pagination import make_pagination
 from decouple import config
-from django.contrib.messages import error, success, info, debug, warning
+from django.contrib import messages
 
 
 RECIPES_PER_PAGE = config('RECIPES_PER_PAGE', cast=int)
@@ -19,7 +19,6 @@ def home(request):
         'pagination_range': pagination_range,
     }
     
-    error(request, 'QUE LEGAL FOI UM ERRO')
     
     return render(request, 'recipes/pages/home.html', context)
 
