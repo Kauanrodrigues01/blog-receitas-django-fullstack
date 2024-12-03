@@ -1,14 +1,9 @@
-{% extends "global/base.html" %}
+{% extends 'global/base.html' %}
 
-{% block title %}{{ recipe_title }}{% endblock title %}
+{% block title %}{{ recipe.title }} | {% endblock title %}
 
 {% block content %}
-    <div class="main-content main-content-detail container">
-        {% if recipe %}
-            {% include 'recipes/partials/recipe.html' %}
-        {% else %}
-            <h2>Recipe Not Found</h2>
-        {% endif %}
-    </div>
+<div class="main-content main-content-detail container">
+    {% include 'recipes/partials/recipe.html' %}
+</div>
 {% endblock content %}
-        

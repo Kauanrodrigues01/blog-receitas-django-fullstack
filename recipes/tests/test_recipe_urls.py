@@ -1,14 +1,22 @@
-from .base.test_base import TestBaseRecipes, RecipeURLMixin
+from django.test import TestCase
+from django.urls import reverse
 
-class RecipeURLsTest(TestBaseRecipes, RecipeURLMixin):
+
+class RecipeURLsTest(TestCase):
     def test_recipe_home_url_is_correct(self):
-        self.assertEqual(self.home_url, '/')
-        
+        url = reverse('recipes:home')
+        self.assertEqual(url, '/')
+
     def test_recipe_category_url_is_correct(self):
-        self.assertEqual(self.get_category_url(), '/recipes/category/1/')
-        
+        url = reverse('recipes:category', kwargs={'category_id': 1})
+        self.assertEqual(url, '/recipes/category/1/')
+
     def test_recipe_detail_url_is_correct(self):
-        self.assertEqual(self.get_recipe_url(), '/recipes/1/')
-        
+        url = reverse('recipes:recipe', kwargs={'id': 1})
+        self.assertEqual(url, '/recipes/1/')
+
     def test_recipe_search_url_is_correct(self):
-        self.assertEqual(self.get_search_url(), '/recipes/search/')
+        url = reverse('recipes:search')
+        self.assertEqual(url, '/recipes/search/')
+
+# RED - GREEN - REFACTOR

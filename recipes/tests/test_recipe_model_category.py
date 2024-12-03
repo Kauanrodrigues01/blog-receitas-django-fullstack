@@ -1,12 +1,15 @@
-from .base.test_base import RecipeCreationMixin, TestBaseRecipes
 from django.core.exceptions import ValidationError
 
-class CategoryModelTest(TestBaseRecipes, RecipeCreationMixin):
-    @classmethod
-    def setUpTestData(cls):
-        cls.instance = cls()
-        cls.category = cls.instance.make_category(name='Category Test')
-        
+from .test_recipe_base import RecipeTestBase
+
+
+class RecipeCategoryModelTest(RecipeTestBase):
+    def setUp(self) -> None:
+        self.category = self.make_category(
+            name='Category Testing'
+        )
+        return super().setUp()
+
     def test_recipe_category_model_string_representarion_is_name_field(self):
         self.assertEqual(
             str(self.category),
