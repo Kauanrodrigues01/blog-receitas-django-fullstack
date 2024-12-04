@@ -1,6 +1,7 @@
 from pathlib import Path
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
+from decouple import config
 
 ROOT_PATH = Path(__file__).parent.parent
 CHROMEDRIVER_NAME = 'chromedriver.exe'
@@ -14,6 +15,9 @@ def make_chrome_browser(*options):
                 chrome_options.add_argument(option)
             except:
                 print(f'Não foi possivel adicionar a opção: {option} para o chrome')
+                
+    if config('SELENIUM_HEADLESS') == '1':
+        chrome_options.add_argument('--headless')
         
     chrome_service = Service(executable_path=CHROMEDRIVER_PATH)
     browser = webdriver.Chrome(service=chrome_service, options=chrome_options)
